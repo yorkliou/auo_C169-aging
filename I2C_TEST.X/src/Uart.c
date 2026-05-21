@@ -206,7 +206,7 @@ void Handle_CKAV(CommandSource src)     //??????
 {
     char uart_str[256];
     //const char* data = "BMW_C169_Y1.0.0";
-    const char* data = "BMW_C169_Y1.2.0";
+    const char* data = "BMW_C169_Y1.3.1";
     int len = BuildUARTHexString("CKAV", data, uart_str, sizeof(uart_str));
     if (src == SRC_WIRELESS) {
         SERCOM1_USART_Write( uart_str, len );

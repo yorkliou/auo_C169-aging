@@ -150,6 +150,7 @@ extern "C" {
     void Write_Power_Fault_To_Flash(void);
     void Retry_Display_Init_Process(void);
     void Display_Init(void);
+    void Check_Current_And_Reset_Display(void);
     /*  A brief description of a section can be given directly below the section
         banner.
      */

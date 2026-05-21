@@ -245,7 +245,8 @@ int main(void) {
     TI69601_REG_WRITE_FC9(0x00, 0x0B, 0x00, 0x17, 0x42, 0x60); //Phase shifter mode#3 (12-23)	
     TI69601_REG_WRITE_FC9(0x00, 0x17, 0x00, 0x23, 0x22, 0x60); //Phase shifter mode#2 (24-35)
 
-    TI69601_REG_WRITE_FC3(0x03, 0xA3); //0xA3 4.8mA
+    //TI69601_REG_WRITE_FC3(0x03, 0xA3); //0xA3 4.8mA
+    TI69601_REG_WRITE_FC3(0x01,0x95);   //0x95 4.4mA
     
     BRT_Flag = 0;
     //TI69601_REG_WRITE_FC3(0x03, 168);//0x77 0.5mA
@@ -308,7 +309,8 @@ int main(void) {
                 SYSTICK_DelayMs(200); 
                 All_Gate_ON();    
                 show_blue_TCON();
-                TI69601_REG_WRITE_FC3(0x03, 0xA3); //0xA3 4.8mA   ;           
+                //TI69601_REG_WRITE_FC3(0x03, 0xA3); //0xA3 4.8mA   
+                TI69601_REG_WRITE_FC3(0x01,0x95);   //0x95 4.4mA;           
                 current_color = BLUE;
                 bist_mode_loop();
                

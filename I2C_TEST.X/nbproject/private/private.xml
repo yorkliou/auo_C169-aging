@@ -3,15 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/USER/Desktop/TEST/4/src/config/default/peripheral/adc/plib_adc0.c</file>
-            <file>file:/C:/Users/USER/Desktop/TEST/4/src/config/default/peripheral/tc/plib_tc5.c</file>
-            <file>file:/C:/Users/USER/Desktop/TEST/4/src/main.c</file>
-            <file>file:/C:/Users/USER/Desktop/TEST/4/I2C_TEST.X/src/ProcessControl.c</file>
-            <file>file:/C:/Users/USER/Desktop/TEST/4/I2C_TEST.X/src/Uart.c</file>
-            <file>file:/C:/Users/USER/Desktop/TEST/4/I2C_TEST.X/src/ProcessControl.h</file>
-            <file>file:/C:/Users/USER/Desktop/TEST/4/I2C_TEST.X/src/Tcon_SPI.c</file>
-            <file>file:/C:/Users/USER/Desktop/TEST/4/I2C_TEST.X/src/Tcon_SPI.h</file>
-            <file>file:/C:/Users/USER/Desktop/TEST/4/src/config/default/peripheral/systick/plib_systick.c</file>
+            <file>file:/C:/Users/USER/Desktop/TEST/C169/src/main.c</file>
+            <file>file:/C:/Users/USER/Desktop/TEST/C169/src/config/default/peripheral/systick/plib_systick.c</file>
+            <file>file:/C:/Users/USER/Desktop/TEST/C169/src/config/default/peripheral/adc/plib_adc0.c</file>
+            <file>file:/C:/Users/USER/.mchp_packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include/core_cm0plus.h</file>
+            <file>file:/C:/Users/USER/Desktop/TEST/C169/I2C_TEST.X/src/ProcessControl.c</file>
+            <file>file:/C:/Users/USER/Desktop/TEST/C169/I2C_TEST.X/src/Uart.c</file>
+            <file>file:/C:/Users/USER/Desktop/TEST/C169/src/config/default/peripheral/clock/plib_clock.c</file>
+            <file>file:/C:/Users/USER/Desktop/TEST/C169/I2C_TEST.X/src/ProcessControl.h</file>
         </group>
     </open-files>
 </project-private>

@@ -85,7 +85,7 @@ void Write_Power_Fault_To_Flash(void);
 void Write_DP_Error_To_Flash(void);
 void Retry_Display_Init_Process(void);
 void Display_Init(void);
-
+void Check_Current_And_Reset_Display(void);
 
 typedef enum {
     NONE = -1,
@@ -163,7 +163,8 @@ void pattern_switch(bool is_last_switch) {
 
     // Pattern 1: ?
     show_black_TCON();
-    TI69601_REG_WRITE_FC3(0x03, 0xA3); //0xA3 4.8mA   
+    //TI69601_REG_WRITE_FC3(0x03, 0xA3); //0xA3 4.8mA   
+    TI69601_REG_WRITE_FC3(0x01,0x95);   //0x95 4.4mA
     PatternCounter = 0;
     while (PatternCounter < 190) {
         //TI69601_BRT_WRITE_WORD(TI69601_CURRENT_U_250306P5, 1);
@@ -178,6 +179,7 @@ void pattern_switch(bool is_last_switch) {
     PatternCounter = 0;
     while (PatternCounter < 190) {
         if (is_last_switch && PatternCounter == 180) {
+            Check_Current_And_Reset_Display();  //check Current and rest
             Save_IBL_IDD_ToFlash(current_index);
             Flash_Read_MultiBytes(0x003000, flash_data, 720);
         }
@@ -256,8 +258,7 @@ void First_Cycle(void) {
     //    e=FAULT_Get();
     //    
     packed = GetPinStatus();
-    Retry_Display_Init_Process();
-    
+    Retry_Display_Init_Process();       //check DTC and reset
     ///----------------------------------------DTC??
     //    if(current_index==0)
     //    {
@@ -722,9 +723,9 @@ uint8_t Read_PF_Results(void)
     
 }
  void Display_Init(void)
-{
+{  
     TCON_CS_Set();
-    
+        
     //----------------------------------------
     BL_VDD1_Set();
     BL_VDD2_Set();
@@ -746,7 +747,7 @@ uint8_t Read_PF_Results(void)
 
     //RESET=GND, Normal Power off (All Gate on)
     //******************************************** All_Gate_ON();
-    //******************************************** STBYB_Set();
+    //STBYB_Set();
     
     SYSTICK_DelayMs(1000);
     I2c_Gen_write_1A_4P_DP(0xC8,0x58,0xA8,0x18,0x23);
@@ -774,7 +775,8 @@ uint8_t Read_PF_Results(void)
     TI69601_REG_WRITE_FC9(0x00, 0x0B, 0x00, 0x17, 0x42, 0x60); //Phase shifter mode#3 (12-23)   
     TI69601_REG_WRITE_FC9(0x00, 0x17, 0x00, 0x23, 0x22, 0x60); //Phase shifter mode#2 (24-35)
 
-    TI69601_REG_WRITE_FC3(0x03, 0xA3); //0xA3 4.8mA
+    //TI69601_REG_WRITE_FC3(0x03, 0xA3); //0xA3 4.8mA
+    TI69601_REG_WRITE_FC3(0x01,0x95);   //0x95 4.4mA
     
     BRT_Flag = 0;
     //TI69601_REG_WRITE_FC3(0x03, 168);//0x77 0.5mA
@@ -820,8 +822,68 @@ void Retry_Display_Init_Process(void)
         }
     }
 }
+void Check_Current_And_Reset_Display(void)
+{
+    uint16_t imonValue;
+    float imon_voltage;
+    float temp_IBL;
 
+    // ????????? 3 ?
+    for (int i = 0; i < 3; i++)
+    {
+        // 1. ?? ADC ????? (IMON_Analog)
+        imonValue = ReadADC(ADC_POSINPUT_AIN7); 
+        imon_voltage = imonValue * 3.3f / 4096.0f;
 
+        // ???? (????)
+        temp_IBL = imon_voltage * 1000000.0f / 2100.0f / 246.0f;
+
+        // 2. ????????
+        if (temp_IBL >= 1.0f)
+        {
+            // ?????? 1.0f ???????????????????
+            return; 
+        }
+
+        // --- ??? < 1.0f??????????? ---
+        
+        // ??????/?????????????
+        BL_VDD1_Clear();
+        BL_VDD2_Clear();
+        TCON_VDD_Clear();
+
+        // ?? 3 ??????????
+        SYSTICK_DelayMs(3000);
+
+        // ??????????
+        Display_Init();
+        STBYB_Set();
+        // ???????????? ADC ?? temp_IBL ????
+    }
+}
+//void Check_Current_And_Reset_Display(void)
+//{
+//    uint16_t imonValue;
+//    float imon_voltage;
+//    float temp_IBL;
+//
+//
+//    // 1. ?? ADC ????? (IMON_Analog)
+//    imonValue = ReadADC(ADC_POSINPUT_AIN7); 
+//    imon_voltage = imonValue * 3.3f / 4096.0f;
+//
+//    // ????? (????)
+//    temp_IBL = imon_voltage * 1000000.0f / 2100.0f / 246.0f;
+//
+//    // 2. ??????? > 1???????????????
+//    if (temp_IBL < 1.0f)
+//    {
+//        BL_VDD1_Clear();
+//        BL_VDD2_Clear();
+//        NVIC_SystemReset();
+//    }
+//    
+//}
 /* ************************************************************************** */
 /* ************************************************************************** */
 // Section: Local Functions                                                   */
